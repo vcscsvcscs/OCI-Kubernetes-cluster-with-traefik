@@ -36,3 +36,4 @@ terraform.rc
 *tf.plan
 *.terraform.lock.hcl
 oci-managed/oke/kubeconfig
+oci-managed/traefik-values.yml
