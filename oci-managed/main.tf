@@ -51,7 +51,7 @@ module "nlb" {
 
   compartment_ocid = var.compartment_ocid
   cluster_ocid     = module.oke.cluster_ocid
-  values_file      = "traefik-values.yaml"
+  values_file      = "traefik-values.yml"
 
   depends_on = [ module.oke ]
 }

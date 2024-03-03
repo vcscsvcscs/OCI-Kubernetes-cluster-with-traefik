@@ -870,25 +870,30 @@ persistence:
 
 # -- Certificates resolvers configuration
 certResolvers: {}
-#   letsencrypt:
+#letsencrypt:
 #     # for challenge options cf. https://doc.traefik.io/traefik/https/acme/
-#     email: email@example.com
-#     dnsChallenge:
+#    email: email@example.com
+#    dnsChallenge:
 #       # also add the provider's required configuration under env
 #       # or expand then from secrets/configmaps with envfrom
 #       # cf. https://doc.traefik.io/traefik/https/acme/#providers
-#       provider: cloudflare
+#      provider: cloudflare
 #       # add futher options for the dns challenge as needed
 #       # cf. https://doc.traefik.io/traefik/https/acme/#dnschallenge
 #       delayBeforeCheck: 30
 #       resolvers:
 #         - 1.1.1.1
 #         - 8.8.8.8
-#     tlsChallenge: true
-#     httpChallenge:
+#      tlsChallenge: true
+#      httpChallenge:
 #       entryPoint: "web"
 #     # It has to match the path with a persistent volume
-#     storage: /data/acme.json
+#      storage: /data/acme.json
+#      env:
+#        - name: CLOUDFLARE_EMAIL
+#          value: ""
+#        - name: CLOUDFLARE_API_KEY
+#          value: ""
 
 # -- If hostNetwork is true, runs traefik in the host network namespace
 # To prevent unschedulabel pods due to port collisions, if hostNetwork=true

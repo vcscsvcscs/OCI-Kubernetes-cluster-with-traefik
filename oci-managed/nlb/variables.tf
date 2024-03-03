@@ -34,5 +34,5 @@ variable "replica_count" {
 variable "values_file" {
   description = "The name of the traefik helmchart values file to use"
   type        = string
-  default     = "values.yaml"
+  default     = "traefik-values.yml"
 }
