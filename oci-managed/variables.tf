@@ -12,12 +12,10 @@ variable "certmanager_email_address" {}
 variable "region" {}
 variable "public_key_path" {}
 
-variable "k3s_server_pool_size" {
+variable "node_pool_size" {
   default = 2
 }
-variable "k3s_worker_pool_size" {
-  default = 2
-}
+
 variable "k3s_extra_worker_node" {
   default = false
 }
