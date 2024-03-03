@@ -16,8 +16,6 @@ data "cloudinit_config" "k3s_server_tpl" {
       is_k3s_server                     = true,
       disable_ingress                   = var.disable_ingress,
       ingress_controller                = var.ingress_controller,
-      nginx_ingress_release             = var.nginx_ingress_release,
-      istio_release                     = var.istio_release,
       install_certmanager               = var.install_certmanager,
       certmanager_release               = var.certmanager_release,
       certmanager_email_address         = var.certmanager_email_address,
