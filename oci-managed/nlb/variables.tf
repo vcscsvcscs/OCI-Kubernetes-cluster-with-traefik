@@ -5,9 +5,6 @@ variable "environment" {
 variable "cluster_ocid" {
   type = string
 }
-variable "cluster_public_endpoint" {
-  type = string
-}
 
 variable "namespace" {
   description = "Namespace to install traefik chart into"

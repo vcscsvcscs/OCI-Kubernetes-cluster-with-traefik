@@ -27,8 +27,8 @@ module "snet" {
   environment      = var.environment
 
   vcn_id           = module.vcn.vcn_id
-  vcn_nat_route_id = module.vcn.vcn_nat_route_table_id
-  vcn_ig_route_id  = module.vcn.vcn_ig_route_table_id
+  vcn_nat_route_id = module.vcn.nat_route_id
+  vcn_ig_route_id  = module.vcn.ig_route_id
 }
 
 module "oke" {
@@ -41,7 +41,7 @@ module "oke" {
   vcn_id                    = module.vcn.vcn_id
   vcn_public_subnet_id      = module.snet.public_subnet_id
   vcn_private_subnet_id     = module.snet.private_subnet_id
-  node_availability_domains = [var.availability_domain]
+  node_availability_domains = var.availability_domain
   node_pool_size            = var.node_pool_size
   ssh_public_key            = var.public_key_path
 }
@@ -51,6 +51,7 @@ module "nlb" {
 
   compartment_ocid = var.compartment_ocid
   cluster_ocid     = module.oke.cluster_ocid
-  cluster_public_endpoint = module.oke.public_endpoint
-  values_file = "traefik-values.yaml"
+  values_file      = "traefik-values.yaml"
+
+  depends_on = [ module.oke ]
 }

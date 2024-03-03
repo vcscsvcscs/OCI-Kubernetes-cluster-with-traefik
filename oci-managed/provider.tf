@@ -19,3 +19,9 @@ provider "oci" {
   region                 = var.region
   retry_duration_seconds = 120
 }
+
+provider "helm" {
+  kubernetes {
+    config_path = "oke/kubeconfig"
+  }
+}

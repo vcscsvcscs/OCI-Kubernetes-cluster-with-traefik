@@ -21,7 +21,7 @@ resource "oci_containerengine_node_pool" "k8s_node_pool" {
   }
 
   node_source_details {
-    image_id    = data.oci_core_images.latest_image.images.0.id
+    image_id    = var.node_image_ocid
     source_type = "image"
   }
 

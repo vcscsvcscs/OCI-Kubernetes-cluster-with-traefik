@@ -35,3 +35,4 @@ override.tf.json
 terraform.rc
 *tf.plan
 *.terraform.lock.hcl
+oci-managed/oke/kubeconfig

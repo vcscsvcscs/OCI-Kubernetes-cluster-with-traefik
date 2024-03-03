@@ -12,9 +12,11 @@ variable "kubernetes_version" {
 variable "ssh_public_key" {
   type = string
 }
+variable "node_image_ocid" {
+  default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaaiiymiaz2loraurxo6dgj5y4oiturf4inrkzvwimzw3d2a42kns6q"
+}
 variable "node_availability_domains" {
   type    = list(string)
-  default = data.oci_identity_availability_domains.ads.availability_domains[*].name
 }
 variable "node_pool_size" {
   type    = number
@@ -34,4 +36,3 @@ variable "vcn_public_subnet_id" {
 variable "vcn_private_subnet_id" {
   type = string
 }
-
