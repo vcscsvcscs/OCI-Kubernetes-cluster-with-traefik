@@ -11,10 +11,26 @@ resource "helm_release" "traefik" {
 
   # If values file specified by the var.values_file input variable exists then apply the values from this file
   # else apply the default values from the chart
-  values = [fileexists("${path.root}/${var.values_file}") == true ? file("${path.root}/${var.values_file}") : ""]
+  values = [fileexists("${path.root}/${var.values_file}") == true ? templatefile("${path.root}/${var.values_file}", var.traefik_template_values) : ""]
 
   set {
     name  = "deployment.replicas"
     value = var.replica_count
   }
+}
+
+resource "random_password" "traefik_dashboard_password" {
+  length           = 128
+  special          = true
+  override_special = "_%@"
+  upper            = true
+  lower            = true
+}
+
+resource "kubectl_manifest" "dashboard-ingress" {
+  depends_on = [helm_release.traefik]
+  yaml_body  = templatefile("${path.root}/${var.traefik_dashboard_ingress_file}", {
+    traefik_dashboard_username = base64encode("admin")
+    traefik_dashboard_password = base64encode(random_password.traefik_dashboard_password.result)
+  })
 }

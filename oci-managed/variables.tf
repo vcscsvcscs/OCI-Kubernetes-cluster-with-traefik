@@ -4,11 +4,18 @@ variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
 variable "availability_domain" {}
-variable "my_public_ip_cidr" {}
 variable "cluster_name" {}
-variable "agent_os_image_id" {}
-variable "server_os_image_id" {}
-variable "certmanager_email_address" {}
+
+variable "certmanager_email_address" {
+  type = string
+}
+variable "cloudflare_email_address" {
+  type = string
+}
+variable "cloudflare_api_key" {
+  type = string
+}
+
 variable "region" {}
 variable "public_key_path" {}
 

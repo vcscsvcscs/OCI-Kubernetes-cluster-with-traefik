@@ -51,7 +51,14 @@ module "nlb" {
 
   compartment_ocid = var.compartment_ocid
   cluster_ocid     = module.oke.cluster_ocid
-  values_file      = "traefik-values.yml"
+  values_file      = "traefik-values.tfpl.yaml"
+  traefik_template_values = {
+    letsencrypt = var.cloudflare_api_key != ""
+    certmanager_email_address = var.certmanager_email_address
+    cloudflare_email_address  = var.cloudflare_email_address
+    cloudflare_api_key        = var.cloudflare_api_key
+  }
+  traefik_dashboard_ingress_file = "traefik-dashboard.tfpl.yaml"
 
   depends_on = [ module.oke ]
 }

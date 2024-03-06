@@ -870,30 +870,34 @@ persistence:
 
 # -- Certificates resolvers configuration
 certResolvers: {}
-#letsencrypt:
-#     # for challenge options cf. https://doc.traefik.io/traefik/https/acme/
-#    email: email@example.com
-#    dnsChallenge:
-#       # also add the provider's required configuration under env
-#       # or expand then from secrets/configmaps with envfrom
-#       # cf. https://doc.traefik.io/traefik/https/acme/#providers
-#      provider: cloudflare
-#       # add futher options for the dns challenge as needed
-#       # cf. https://doc.traefik.io/traefik/https/acme/#dnschallenge
-#       delayBeforeCheck: 30
-#       resolvers:
-#         - 1.1.1.1
-#         - 8.8.8.8
-#      tlsChallenge: true
-#      httpChallenge:
-#       entryPoint: "web"
-#     # It has to match the path with a persistent volume
-#      storage: /data/acme.json
-#      env:
-#        - name: CLOUDFLARE_EMAIL
-#          value: ""
-#        - name: CLOUDFLARE_API_KEY
-#          value: ""
+
+%{ if letsencrypt }
+letsencrypt:
+     # for challenge options cf. https://doc.traefik.io/traefik/https/acme/
+    email: ${certmanager_email_address}
+    dnsChallenge:
+       # also add the provider's required configuration under env
+       # or expand then from secrets/configmaps with envfrom
+       # cf. https://doc.traefik.io/traefik/https/acme/#providers
+      provider: cloudflare   
+       # add futher options for the dns challenge as needed
+       # cf. https://doc.traefik.io/traefik/https/acme/#dnschallenge
+#      delayBeforeCheck: 30
+      resolvers:
+         - 1.1.1.1
+         - 1.0.0.2
+
+      tlsChallenge: true
+      httpChallenge:
+       entryPoint: "web"
+     # It has to match the path with a persistent volume
+      storage: /data/acme.json
+      env:
+        - name: CLOUDFLARE_EMAIL
+          value: ${cloudflare_email_address}
+        - name: CLOUDFLARE_API_KEY
+          value: ${cloudflare_api_key}
+%{ endif }
 
 # -- If hostNetwork is true, runs traefik in the host network namespace
 # To prevent unschedulabel pods due to port collisions, if hostNetwork=true

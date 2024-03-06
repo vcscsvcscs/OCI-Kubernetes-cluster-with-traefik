@@ -34,5 +34,13 @@ variable "replica_count" {
 variable "values_file" {
   description = "The name of the traefik helmchart values file to use"
   type        = string
-  default     = "traefik-values.yml"
+}
+
+variable "traefik_template_values" {
+  default = {}
+}
+
+variable "traefik_dashboard_ingress_file" {
+  description = "The name of the kubernetes manifest file to use"
+  type        = string
 }
