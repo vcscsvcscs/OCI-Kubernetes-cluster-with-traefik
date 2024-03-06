@@ -59,19 +59,19 @@ deployment:
   #   hostPath:
   #     path: /var/run/statsd-exporter
   # -- Additional initContainers (e.g. for setting file permission as shown below)
-  initContainers: []
+  initContainers:
   # The "volume-permissions" init container is required if you run into permission issues.
   # Related issue: https://github.com/traefik/traefik-helm-chart/issues/396
-  # - name: volume-permissions
-  #   image: busybox:latest
-  #   command: ["sh", "-c", "touch /data/acme.json; chmod -v 600 /data/acme.json"]
-  #   securityContext:
-  #     runAsNonRoot: true
-  #     runAsGroup: 65532
-  #     runAsUser: 65532
-  #   volumeMounts:
-  #     - name: data
-  #       mountPath: /data
+    - name: volume-permissions
+      image: busybox:latest
+      command: ["sh", "-c", "touch /data/acme.json; chmod -v 600 /data/acme.json"]
+      securityContext:
+        runAsNonRoot: true
+        runAsGroup: 65532
+        runAsUser: 65532
+      volumeMounts:
+        - name: data
+          mountPath: /data
   # -- Use process namespace sharing
   shareProcessNamespace: false
   # -- Custom pod DNS policy. Apply if `hostNetwork: true`
@@ -155,15 +155,15 @@ ingressRoute:
     # -- Additional ingressRoute labels (e.g. for filtering IngressRoute by custom labels)
     labels: {}
     # -- The router match rule used for the dashboard ingressRoute
-    matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+    matchRule: Host(`${dashboard-url}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
     # -- Specify the allowed entrypoints to use for the dashboard ingress route, (e.g. traefik, web, websecure).
     # By default, it's using traefik entrypoint, which is not exposed.
     # /!\ Do not expose your dashboard without any protection over the internet /!\
-    entryPoints: ["traefik"]
+    entryPoints: ["websecure"]
     # -- Additional ingressRoute middlewares (e.g. for authentication)
-    middlewares: []
-    # -- TLS options (e.g. secret containing certificate)
-    tls: {}
+    middlewares: 
+      - name: traefik-dashboard-auth 
+
   healthcheck:
     # -- Create an IngressRoute for the healthcheck probe
     enabled: false
@@ -588,6 +588,10 @@ env:
   valueFrom:
     fieldRef:
       fieldPath: metadata.namespace
+- name: CLOUDFLARE_EMAIL
+  value: ${cloudflare_email_address}
+- name: CLOUDFLARE_API_KEY
+  value: ${cloudflare_api_key}
 # - name: SOME_VAR
 #   value: some-var-value
 # - name: SOME_VAR_FROM_CONFIG_MAP
@@ -856,7 +860,7 @@ persistence:
   # -- Enable persistence using Persistent Volume Claims
   # ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
   # It can be used to store TLS certificates, see `storage` in certResolvers
-  enabled: false
+  enabled: true
   name: data
   #  existingClaim: ""
   accessMode: ReadWriteOnce
@@ -868,35 +872,22 @@ persistence:
   # -- Only mount a subpath of the Volume into the pod
   # subPath: ""
 
-# -- Certificates resolvers configuration
-certResolvers: {}
-
 %{ if letsencrypt }
-letsencrypt:
-     # for challenge options cf. https://doc.traefik.io/traefik/https/acme/
+# -- Certificates resolvers configuration
+certResolvers:
+  letsencrypt:
+    # for challenge options cf. https://doc.traefik.io/traefik/https/acme/
     email: ${certmanager_email_address}
     dnsChallenge:
-       # also add the provider's required configuration under env
-       # or expand then from secrets/configmaps with envfrom
-       # cf. https://doc.traefik.io/traefik/https/acme/#providers
       provider: cloudflare   
-       # add futher options for the dns challenge as needed
-       # cf. https://doc.traefik.io/traefik/https/acme/#dnschallenge
-#      delayBeforeCheck: 30
       resolvers:
-         - 1.1.1.1
-         - 1.0.0.2
+        - 1.1.1.1
+        - 1.0.0.2
 
       tlsChallenge: true
       httpChallenge:
-       entryPoint: "web"
-     # It has to match the path with a persistent volume
+      entryPoint: "web"
       storage: /data/acme.json
-      env:
-        - name: CLOUDFLARE_EMAIL
-          value: ${cloudflare_email_address}
-        - name: CLOUDFLARE_API_KEY
-          value: ${cloudflare_api_key}
 %{ endif }
 
 # -- If hostNetwork is true, runs traefik in the host network namespace
@@ -996,7 +987,24 @@ podSecurityContext:
 #
 # In some cases, it can avoid the need for additional, extended or adhoc deployments.
 # See #595 for more details and traefik/tests/values/extra.yaml for example.
-extraObjects: []
+extraObjects:
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: dashboard-authsecret
+      namespace: traefik-loadbalancer
+    type: kubernetes.io/basic-auth
+    data:
+      username: ${traefik_dashboard_username}
+      password: ${traefik_dashboard_password}
+  - apiVersion: traefik.containo.us/v1alpha1
+    kind: Middleware
+    metadata:
+      name: traefik-dashboard-auth
+      namespace: traefik-loadbalancer
+    spec:
+      basicAuth:
+        secret: dashboard-authsecret
 
 # This will override the default Release Namespace for Helm.
 # It will not affect optional CRDs such as `ServiceMonitor` and `PrometheusRules`

@@ -57,8 +57,8 @@ module "nlb" {
     certmanager_email_address = var.certmanager_email_address
     cloudflare_email_address  = var.cloudflare_email_address
     cloudflare_api_key        = var.cloudflare_api_key
+    dashboard-url = "traefik.${var.my_domain}"
   }
-  traefik_dashboard_ingress_file = "traefik-dashboard.tfpl.yaml"
 
   depends_on = [ module.oke ]
 }

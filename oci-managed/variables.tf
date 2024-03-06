@@ -15,6 +15,9 @@ variable "cloudflare_email_address" {
 variable "cloudflare_api_key" {
   type = string
 }
+variable "my_domain" {
+  type = string
+}
 
 variable "region" {}
 variable "public_key_path" {}
