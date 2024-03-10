@@ -22,7 +22,7 @@ variable "traefik_chart_version" {
 variable "timeout_seconds" {
   type        = number
   description = "Helm chart deployment can sometimes take longer than the default 5 minutes. Set a custom timeout here."
-  default     = 180 # 10 minutes
+  default     = 800 # 10 minutes
 }
 
 variable "replica_count" {

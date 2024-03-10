@@ -6,15 +6,20 @@ variable "private_key_path" {}
 variable "availability_domain" {}
 variable "cluster_name" {}
 
-variable "certmanager_email_address" {
-  type = string
-}
-variable "cloudflare_email_address" {
+
+variable "cloudflare_api_email" {
   type = string
 }
 variable "cloudflare_api_key" {
   type = string
 }
+variable "cloudflare_origin_certificate_pem" {
+  type = string
+}
+variable "cloudflare_origin_certificate_key" {
+  type = string
+}
+
 variable "my_domain" {
   type = string
 }

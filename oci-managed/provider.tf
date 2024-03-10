@@ -8,9 +8,9 @@ terraform {
       source  = "hashicorp/helm"
       version = ">= 2.12.1"
     }
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.14.0"
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.0"
     }
   }
 }
@@ -30,6 +30,7 @@ provider "helm" {
   }
 }
 
-provider "kubectl" {
-  config_path = "oke/kubeconfig"
+provider "cloudflare" {
+  email   = var.cloudflare_api_email
+  api_key = var.cloudflare_api_key
 }
