@@ -168,7 +168,7 @@ ingressRoute:
 
   healthcheck:
     # -- Create an IngressRoute for the healthcheck probe
-    enabled: false
+    enabled: true
     # -- Additional ingressRoute annotations (e.g. for kubernetes.io/ingress.class)
     annotations: {}
     # -- Additional ingressRoute labels (e.g. for filtering IngressRoute by custom labels)
@@ -527,11 +527,6 @@ ports:
     # service by default as well.
     exposeInternal: false
 
-tlsStore:
-   default:
-      defaultCertificate:
-        secretName: cloudflare-origin-certificate
-
 service:
   enabled: true
   ## -- Single service is using `MixedProtocolLBService` feature gate.
@@ -630,10 +625,20 @@ extraObjects:
     kind: Secret
     metadata:
       name: cloudflare-origin-certificate
+      namespace: traefik-loadbalancer
     type: Opaque
     data:
       tls.crt: ${cloudflare_origin_certificate_pem}
       tls.key: ${cloudflare_origin_certificate_key}
+
+  - apiVersion: traefik.io/v1alpha1
+    kind: TLSStore
+    metadata:
+      name: default
+      namespace: traefik-loadbalancer
+    spec:
+      defaultCertificate:
+        secretName: cloudflare-origin-certificate
 
   - apiVersion: v1
     kind: Secret
