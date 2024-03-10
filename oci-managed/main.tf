@@ -29,6 +29,7 @@ module "snet" {
   vcn_id           = module.vcn.vcn_id
   vcn_nat_route_id = module.vcn.nat_route_id
   vcn_ig_route_id  = module.vcn.ig_route_id
+  depends_on = [ module.vcn ]
 }
 
 module "oke" {
@@ -44,6 +45,7 @@ module "oke" {
   node_availability_domains = var.availability_domain
   node_pool_size            = var.node_pool_size
   ssh_public_key            = var.public_key_path
+  depends_on = [ module.snet ]
 }
 
 module "nlb" {
@@ -53,11 +55,9 @@ module "nlb" {
   cluster_ocid     = module.oke.cluster_ocid
   values_file      = "traefik-values.tfpl.yaml"
   traefik_template_values = {
-    letsencrypt = var.cloudflare_api_key != ""
-    certmanager_email_address = var.certmanager_email_address
-    cloudflare_email_address  = var.cloudflare_email_address
-    cloudflare_api_key        = var.cloudflare_api_key
-    dashboard-url = "traefik.${var.my_domain}"
+    cloudflare_origin_certificate_pem = base64encode(file(var.cloudflare_origin_certificate_pem))
+    cloudflare_origin_certificate_key = base64encode(file(var.cloudflare_origin_certificate_key))
+    my_domain = var.my_domain
   }
 
   depends_on = [ module.oke ]

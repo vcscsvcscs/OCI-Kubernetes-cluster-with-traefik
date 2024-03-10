@@ -5,7 +5,7 @@ resource "helm_release" "traefik" {
   repository       = "https://traefik.github.io/charts"
   chart            = "traefik"
   version          = var.traefik_chart_version
-  cleanup_on_fail = true
+  cleanup_on_fail  = true
 
   # Helm chart deployment can sometimes take longer than the default 5 minutes
   timeout = var.timeout_seconds
