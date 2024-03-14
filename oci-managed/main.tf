@@ -62,3 +62,14 @@ module "nlb" {
 
   depends_on = [ module.oke ]
 }
+
+module "argocd" {
+  compartment_ocid = var.compartment_ocid
+  cluster_ocid     = module.oke.cluster_ocid
+  count = var.install_argocd ? 1 : 0
+  source = "./argocd"
+
+  my_domain = var.my_domain
+
+  depends_on = [ module.nlb ]
+}

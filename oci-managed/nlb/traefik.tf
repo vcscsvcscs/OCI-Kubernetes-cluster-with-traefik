@@ -1,5 +1,5 @@
 resource "helm_release" "traefik" {
-  namespace        = "traefik-loadbalancer"
+  namespace        = var.namespace
   create_namespace = true
   name             = "traefik"
   repository       = "https://traefik.github.io/charts"

@@ -23,6 +23,10 @@ variable "cloudflare_origin_certificate_key" {
 variable "my_domain" {
   type = string
 }
+variable "install_argocd" {
+  type = bool
+  default = true
+}
 
 variable "region" {}
 variable "public_key_path" {}
