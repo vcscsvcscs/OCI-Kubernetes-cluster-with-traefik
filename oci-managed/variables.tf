@@ -35,12 +35,6 @@ variable "node_pool_size" {
   default = 2
 }
 
-variable "k3s_extra_worker_node" {
-  default = false
-}
-variable "expose_kubeapi" {
-  default = false
-}
 variable "environment" {
   default = "prod"
 }
