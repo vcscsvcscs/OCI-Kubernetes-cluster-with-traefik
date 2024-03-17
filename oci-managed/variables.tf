@@ -28,6 +28,11 @@ variable "install_argocd" {
   default = true
 }
 
+variable "install_cert_manager" {
+  type = bool
+  default = true
+}
+
 variable "region" {}
 variable "public_key_path" {}
 

@@ -63,6 +63,15 @@ module "nlb" {
   depends_on = [ module.oke ]
 }
 
+module "cert-manager" {
+  compartment_ocid = var.compartment_ocid
+  cluster_ocid     = module.oke.cluster_ocid
+  count = var.install_cert_manager ? 1 : 0
+  source = "./certmanager"
+
+  depends_on = [ module.oke ]
+}
+
 module "argocd" {
   compartment_ocid = var.compartment_ocid
   cluster_ocid     = module.oke.cluster_ocid

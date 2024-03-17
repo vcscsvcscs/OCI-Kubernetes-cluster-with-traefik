@@ -30,6 +30,7 @@ You need to provide values for the following variables:
 - ```cloudflare_origin_certificate_key: Private key associated with Cloudflare origin certificate.```
 - ```my_domain: Your domain name.```
 - ```install_argocd: Boolean flag indicating whether to install ArgoCD.```
+- ```install_cert_manager: Boolean flag indicating whether to install cert-manager.```
 - ```region: OCI region where resources will be created.```
 - ```public_key_path: File path to the SSH public key.```
 - ```node_pool_size: Number of worker nodes in the Kubernetes cluster.```
@@ -51,7 +52,9 @@ This module provisions a traefik2 Network Load Balancer for the cluster.
 #### ArgoCD
 
 This module installs and configures ArgoCD on the cluster, if enabled.
-Usage
+#### Cert-Manager
+
+This module if enabled installs cert-manager on the cluster and sets up a ClusterIssuer self signed certificate issuer for pod to pod communication.
 
 ### How to run
 Ensure you have set up your Terraform environment and configured the necessary variables.
