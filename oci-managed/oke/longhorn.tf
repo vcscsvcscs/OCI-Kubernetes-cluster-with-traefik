@@ -1,5 +1,6 @@
 resource "helm_release" "longhorn" {
   count            = var.install_longhorn ? 1 : 0
+  depends_on = [ oci_containerengine_cluster.k8s_cluster ]
   namespace        = "longhorn-system"
   create_namespace = true
   name             = "longhorn"
