@@ -29,6 +29,19 @@ variable "tiller_enabled" {
   default = false
 }
 
+variable "install_longhorn" {
+  default = true
+}
+variable "longhorn_chart_version" {
+  default = "1.6.1"
+}
+# Helm chart deployment can sometimes take longer than the default 5 minutes
+variable "timeout_seconds" {
+  type        = number
+  description = "Helm chart deployment can sometimes take longer than the default 5 minutes. Set a custom timeout here."
+  default     = 800 # 10 minutes
+}
+
 variable "vcn_id" {}
 variable "vcn_public_subnet_id" {
   type = string
