@@ -7,7 +7,7 @@ variable "environment" {
 }
 
 variable "kubernetes_version" {
-  default = "1.29.1"
+  default = "v1.29.1"
 }
 variable "ssh_public_key" {
   type = string
