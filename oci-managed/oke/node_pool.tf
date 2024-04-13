@@ -21,8 +21,8 @@ resource "oci_containerengine_node_pool" "k8s_node_pool" {
   }
 
   node_source_details {
-    image_id    = var.node_image_ocid
-    source_type = "image"
+    image_id                = var.node_image_ocid
+    source_type             = "image"
     boot_volume_size_in_gbs = 100
   }
 

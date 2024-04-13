@@ -27,7 +27,7 @@ resource "helm_release" "argocd" {
 resource "kubectl_manifest" "dashboard-ingress" {
   depends_on = [helm_release.argocd]
 
-  force_new = true
+  force_new         = true
   server_side_apply = true
 
   yaml_body = templatefile("${path.module}/argocd_ingress_route.tfpl.yaml", {

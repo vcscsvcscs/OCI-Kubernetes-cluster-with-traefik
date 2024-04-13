@@ -7,6 +7,6 @@ output "public_endpoint" {
 }
 
 resource "local_file" "oke_kubeconfig" {
-  content         = data.oci_containerengine_cluster_kube_config.cluster_kube_config.content
-  filename        = "${path.module}/kubeconfig"
+  content  = data.oci_containerengine_cluster_kube_config.cluster_kube_config.content
+  filename = "${path.module}/kubeconfig"
 }

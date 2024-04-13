@@ -34,7 +34,7 @@ resource "helm_release" "trust-manager" {
 resource "kubectl_manifest" "cert-manager-cluster-issuer" {
   depends_on = [helm_release.cert-manager, helm_release.trust-manager]
 
-  force_new = true
+  force_new         = true
   server_side_apply = true
 
   yaml_body = templatefile("${path.module}/cluster_issuer.tfpl.yaml", {

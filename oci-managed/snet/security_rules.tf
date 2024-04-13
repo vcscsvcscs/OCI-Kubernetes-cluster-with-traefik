@@ -10,7 +10,7 @@ resource "oci_core_security_list" "private_subnet_sl" {
     destination_type = "CIDR_BLOCK"
     protocol         = "all"
   }
-  
+
   ingress_security_rules {
     stateless   = false
     source      = "10.0.0.0/16"
@@ -53,7 +53,7 @@ resource "oci_core_security_list" "public_subnet_sl" {
     destination_type = "CIDR_BLOCK"
     protocol         = "all"
   }
-  
+
   egress_security_rules {
     stateless        = false
     destination      = "10.0.1.0/24"
@@ -86,7 +86,7 @@ resource "oci_core_security_list" "public_subnet_sl" {
       max = 80
       min = 80
     }
-  } 
+  }
 
   ingress_security_rules {
     stateless   = false

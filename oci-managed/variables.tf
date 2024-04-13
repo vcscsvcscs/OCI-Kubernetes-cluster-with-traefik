@@ -24,12 +24,12 @@ variable "my_domain" {
   type = string
 }
 variable "install_argocd" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "install_cert_manager" {
-  type = bool
+  type    = bool
   default = true
 }
 

@@ -8,7 +8,7 @@ resource "oci_core_instance_configuration" "k3s_server_template" {
     update = "11m"
     delete = "10m"
   }
-  
+
   freeform_tags = {
     "provisioner"           = "terraform"
     "environment"           = "${var.environment}"
@@ -113,9 +113,9 @@ resource "oci_core_instance_configuration" "k3s_worker_template" {
         }
       }
 
-    availability_domain = var.availability_domain
+      availability_domain = var.availability_domain
       # fault_domain = "FAULT-DOMAIN-3"
-      compartment_id      = var.compartment_ocid
+      compartment_id = var.compartment_ocid
 
       create_vnic_details {
         assign_public_ip = true

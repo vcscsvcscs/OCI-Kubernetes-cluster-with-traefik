@@ -29,7 +29,7 @@ module "snet" {
   vcn_id           = module.vcn.vcn_id
   vcn_nat_route_id = module.vcn.nat_route_id
   vcn_ig_route_id  = module.vcn.ig_route_id
-  depends_on = [ module.vcn ]
+  depends_on       = [module.vcn]
 }
 
 module "oke" {
@@ -45,7 +45,7 @@ module "oke" {
   node_availability_domains = var.availability_domain
   node_pool_size            = var.node_pool_size
   ssh_public_key            = var.public_key_path
-  depends_on = [ module.snet ]
+  depends_on                = [module.snet]
 }
 
 module "nlb" {
@@ -57,28 +57,28 @@ module "nlb" {
   traefik_template_values = {
     cloudflare_origin_certificate_pem = base64encode(file(var.cloudflare_origin_certificate_pem))
     cloudflare_origin_certificate_key = base64encode(file(var.cloudflare_origin_certificate_key))
-    my_domain = var.my_domain
+    my_domain                         = var.my_domain
   }
 
-  depends_on = [ module.oke ]
+  depends_on = [module.oke]
 }
 
 module "cert-manager" {
   compartment_ocid = var.compartment_ocid
   cluster_ocid     = module.oke.cluster_ocid
-  count = var.install_cert_manager ? 1 : 0
-  source = "./certmanager"
+  count            = var.install_cert_manager ? 1 : 0
+  source           = "./certmanager"
 
-  depends_on = [ module.oke ]
+  depends_on = [module.oke]
 }
 
 module "argocd" {
   compartment_ocid = var.compartment_ocid
   cluster_ocid     = module.oke.cluster_ocid
-  count = var.install_argocd ? 1 : 0
-  source = "./argocd"
+  count            = var.install_argocd ? 1 : 0
+  source           = "./argocd"
 
   my_domain = var.my_domain
 
-  depends_on = [ module.nlb ]
+  depends_on = [module.nlb]
 }

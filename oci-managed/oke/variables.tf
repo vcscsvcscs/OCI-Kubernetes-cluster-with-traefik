@@ -16,7 +16,7 @@ variable "node_image_ocid" {
   default = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa3mctwlkbkaj76pnlrmdr7w6dd4frkrhuqrdadpq4g67kh5gqbn3q"
 }
 variable "node_availability_domains" {
-  type    = list(string)
+  type = list(string)
 }
 variable "node_pool_size" {
   type    = number
