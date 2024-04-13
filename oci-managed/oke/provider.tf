@@ -2,15 +2,15 @@ terraform {
   required_providers {
     oci = {
       source  = "oracle/oci"
-      version = ">= 5.36.0"
+      version = ">= 5.3.0"
     }
     helm = {
       source  = "hashicorp/helm"
       version = ">= 2.12.1"
     }
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.14.0"
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.28.0"
     }
   }
 }

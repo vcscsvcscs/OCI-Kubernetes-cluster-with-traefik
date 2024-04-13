@@ -12,6 +12,10 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "~> 4.0"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.28.0"
+    }
     kubectl = {
       source  = "gavinbunney/kubectl"
       version = ">= 1.14.0"
@@ -37,6 +41,10 @@ provider "helm" {
 provider "cloudflare" {
   email   = var.cloudflare_api_email
   api_key = var.cloudflare_api_key
+}
+
+provider "kubernetes" {
+  config_path = "oke/kubeconfig"
 }
 
 provider "kubectl" {

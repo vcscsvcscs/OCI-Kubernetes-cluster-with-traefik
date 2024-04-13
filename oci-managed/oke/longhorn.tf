@@ -14,10 +14,10 @@ resource "helm_release" "longhorn" {
 }
 
 resource "kubernetes_annotations" "patch_oci-bv" {
-  count       = var.install_longhorn ? 1 : 0
   depends_on  = [helm_release.longhorn]
   api_version = "storage.k8s.io/v1"
   kind        = "StorageClass"
+  force       = true
 
   metadata {
     name = "oci-bv"
